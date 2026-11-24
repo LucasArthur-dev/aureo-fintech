@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Áureo - Relatórios</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="assets/images/Logo/Áureo-gradiente ouro.png" alt="Áureo">
+        </div>
+        <nav>
+            <a href="dashboard.html" class="nav-link-custom">
+                <i class="bi bi-grid-1x2-fill"></i><span class="nav-label">Dashboard</span>
+            </a>
+            <a href="recebimentos.html" class="nav-link-custom">
+                <i class="bi bi-arrow-down-left-circle"></i><span class="nav-label">Recebimentos</span>
+            </a>
+            <a href="despesas.html" class="nav-link-custom">
+                <i class="bi bi-arrow-up-right-circle"></i><span class="nav-label">Despesas</span>
+            </a>
+            <a href="metas.html" class="nav-link-custom">
+                <i class="bi bi-bullseye"></i><span class="nav-label">Metas</span>
+            </a>
+            <a href="relatorios.html" class="nav-link-custom active">
+                <i class="bi bi-pie-chart"></i><span class="nav-label">Relatórios</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#" class="nav-link-custom">
+                <i class="bi bi-gear"></i><span class="nav-label">Configurações</span>
+            </a>
+            <a href="index.html" class="nav-link-custom">
+                <i class="bi bi-box-arrow-right"></i><span class="nav-label">Sair</span>
+            </a>
+        </div>
+    </aside>
+
+    <div class="app-main">
+        <header class="topbar">
+            <h1>
+                Relatórios
+                <small id="periodLabel">Análise da sua vida financeira</small>
+            </h1>
+            <div class="d-flex align-items-center gap-2">
+                <div class="seg" role="group" aria-label="Período">
+                    <button data-months="3">3 meses</button>
+                    <button data-months="6" class="active">6 meses</button>
+                    <button data-months="12">12 meses</button>
+                </div>
+                <button class="btn btn-outline-gold" id="btnExport">
+                    <i class="bi bi-download me-1"></i> Exportar CSV
+                </button>
+            </div>
+        </header>
+
+        <main class="content">
+
+            <!-- Resumo do período -->
+            <div class="row g-3">
+                <div class="col-md-6 col-xl-3">
+                    <div class="a-card stat-card">
+                        <div class="stat-icon"><i class="bi bi-arrow-down-left-circle"></i></div>
+                        <div class="stat-label">Receitas</div>
+                        <div class="stat-value" id="sumIn">—</div>
+                        <div class="stat-trend" id="avgIn">—</div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="a-card stat-card">
+                        <div class="stat-icon"><i class="bi bi-arrow-up-right-circle"></i></div>
+                        <div class="stat-label">Despesas</div>
+                        <div class="stat-value" id="sumOut">—</div>
+                        <div class="stat-trend down" id="avgOut">—</div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="a-card stat-card accent">
+                        <div class="stat-icon"><i class="bi bi-piggy-bank"></i></div>
+                        <div class="stat-label">Economizado</div>
+                        <div class="stat-value" id="sumSaved">—</div>
+                        <div class="stat-trend" id="rateSaved">—</div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-xl-3">
+                    <div class="a-card stat-card">
+                        <div class="stat-icon"><i class="bi bi-bank"></i></div>
+                        <div class="stat-label">Patrimônio atual</div>
+                        <div class="stat-value" id="netWorth">—</div>
+                        <div class="stat-trend" id="netWorthDelta">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Receitas x Despesas + categorias -->
+            <div class="row g-3 mt-1">
+                <div class="col-lg-7">
+                    <div class="a-card h-100">
+                        <div class="section-title">
+                            Receitas x Despesas
+                            <span class="muted">por mês</span>
+                        </div>
+                        <div class="chart-wrap"><canvas id="barChart"></canvas></div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="a-card h-100">
+                        <div class="section-title">
+                            Para onde foi o dinheiro
+                            <span class="muted">despesas do período</span>
+                        </div>
+                        <div class="row align-items-center g-2">
+                            <div class="col-5">
+                                <div class="chart-wrap sm"><canvas id="donutChart"></canvas></div>
+                            </div>
+                            <div class="col-7">
+                                <ul class="legend-list" id="catLegend"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Patrimônio + insights -->
+            <div class="row g-3 mt-1">
+                <div class="col-lg-7">
+                    <div class="a-card h-100">
+                        <div class="section-title">
+                            Evolução do patrimônio
+                            <span class="muted">saldo acumulado</span>
+                        </div>
+                        <div class="chart-wrap sm"><canvas id="lineChart"></canvas></div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="a-card h-100">
+                        <div class="section-title">O que os números dizem</div>
+                        <div class="d-flex flex-column gap-2" id="insights"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabela mensal -->
+            <div class="a-card mt-3">
+                <div class="section-title">
+                    Resumo mês a mês
+                    <span class="muted" id="tableCount"></span>
+                </div>
+                <table class="a-table">
+                    <thead>
+                        <tr>
+                            <th>Mês</th>
+                            <th class="text-end">Receitas</th>
+                            <th class="text-end">Despesas</th>
+                            <th class="text-end">Saldo</th>
+                            <th class="text-end">Taxa de economia</th>
+                        </tr>
+                    </thead>
+                    <tbody id="monthTable"></tbody>
+                </table>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+    const MONTHS   = ['Dez/25','Jan/26','Fev/26','Mar/26','Abr/26','Mai/26','Jun/26','Jul/26','Ago/26','Set/26','Out/26','Nov/26'];
+    const INCOME   = [7600, 7400, 7400, 7500, 7500, 7700, 7200, 7500, 8100, 8300, 8100, 8350];
+    const EXPENSE  = [5200, 4300, 4100, 4400, 4000, 4500, 4200, 4600, 3900, 4100, 3700, 3529.55];
+    const START_NET_WORTH = 48000;
+    const CATEGORIES = [
+        { name: 'Moradia',    share: 0.40,  color: '#f08a5d' },
+        { name: 'Mercado',    share: 0.245, color: '#58c27d' },
+        { name: 'Transporte', share: 0.14,  color: '#4fa3e3' },
+        { name: 'Saúde',      share: 0.115, color: '#e45858' },
+        { name: 'Lazer',      share: 0.10,  color: '#c678e3' }
+    ];
+
+    const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    const pct = v => (v * 100).toLocaleString('pt-BR', { maximumFractionDigits: 1 }) + '%';
+    const sum = a => a.reduce((s, v) => s + v, 0);
+
+    const netWorthSeries = (() => {
+        let acc = START_NET_WORTH;
+        return INCOME.map((v, i) => (acc += v - EXPENSE[i]));
+    })();
+
+    Chart.defaults.color = '#888';
+    Chart.defaults.font.family = 'Poppins';
+    const grid = { color: 'rgba(255,255,255,0.04)' };
+    const money = v => 'R$ ' + (v / 1000).toLocaleString('pt-BR') + 'k';
+    const tooltip = {
+        backgroundColor: '#141414', borderColor: '#FFB500', borderWidth: 1,
+        callbacks: { label: c => ` ${c.dataset.label ? c.dataset.label + ': ' : ''}${brl(c.parsed.y ?? c.parsed)}` }
+    };
+
+    const barChart = new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: { labels: [], datasets: [
+            { label: 'Receitas', data: [], backgroundColor: '#58c27d', borderRadius: 6, maxBarThickness: 26 },
+            { label: 'Despesas', data: [], backgroundColor: '#FFB500', borderRadius: 6, maxBarThickness: 26 }
+        ]},
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { labels: { color: '#bbb', boxWidth: 10, font: { size: 11 } } }, tooltip },
+            scales: { x: { grid }, y: { grid, ticks: { callback: money } } }
+        }
+    });
+
+    const donutChart = new Chart(document.getElementById('donutChart'), {
+        type: 'doughnut',
+        data: { labels: CATEGORIES.map(c => c.name), datasets: [{
+            data: [], backgroundColor: CATEGORIES.map(c => c.color), borderColor: '#141414', borderWidth: 3
+        }]},
+        options: {
+            responsive: true, maintainAspectRatio: false, cutout: '68%',
+            plugins: { legend: { display: false }, tooltip }
+        }
+    });
+
+    const lineCtx = document.getElementById('lineChart').getContext('2d');
+    const lineGrad = lineCtx.createLinearGradient(0, 0, 0, 220);
+    lineGrad.addColorStop(0, 'rgba(255,181,0,0.35)');
+    lineGrad.addColorStop(1, 'rgba(255,181,0,0)');
+    const lineChart = new Chart(lineCtx, {
+        type: 'line',
+        data: { labels: [], datasets: [{
+            label: 'Patrimônio', data: [], borderColor: '#FFB500', backgroundColor: lineGrad,
+            fill: true, tension: 0.35, borderWidth: 2, pointRadius: 3, pointBackgroundColor: '#FFB500'
+        }]},
+        options: {
+            responsive: true, maintainAspectRatio: false,
+            plugins: { legend: { display: false }, tooltip },
+            scales: { x: { grid }, y: { grid, ticks: { callback: money } } }
+        }
+    });
+
+    let current = [];
+
+    function render(months) {
+        const from = MONTHS.length - months;
+        const labels = MONTHS.slice(from);
+        const inc = INCOME.slice(from);
+        const exp = EXPENSE.slice(from);
+        const nw = netWorthSeries.slice(from);
+        const totalIn = sum(inc), totalOut = sum(exp), saved = totalIn - totalOut;
+        const nwBefore = from === 0 ? START_NET_WORTH : netWorthSeries[from - 1];
+        const nwNow = nw[nw.length - 1];
+
+        document.getElementById('periodLabel').textContent = `${labels[0]} a ${labels[labels.length - 1]} · últimos ${months} meses`;
+        document.getElementById('sumIn').textContent = brl(totalIn);
+        document.getElementById('avgIn').textContent = `média de ${brl(totalIn / months)}/mês`;
+        document.getElementById('sumOut').textContent = brl(totalOut);
+        document.getElementById('avgOut').textContent = `média de ${brl(totalOut / months)}/mês`;
+        document.getElementById('sumSaved').textContent = brl(saved);
+        document.getElementById('rateSaved').textContent = `${pct(saved / totalIn)} da renda guardada`;
+        document.getElementById('netWorth').textContent = brl(nwNow);
+        document.getElementById('netWorthDelta').innerHTML =
+            `<i class="bi bi-arrow-up-right"></i> +${pct((nwNow - nwBefore) / nwBefore)} no período`;
+
+        barChart.data.labels = labels;
+        barChart.data.datasets[0].data = inc;
+        barChart.data.datasets[1].data = exp;
+        barChart.update();
+
+        const catValues = CATEGORIES.map(c => c.share * totalOut);
+        donutChart.data.datasets[0].data = catValues;
+        donutChart.update();
+        document.getElementById('catLegend').innerHTML = CATEGORIES.map((c, i) => `
+            <li><span class="sw" style="background:${c.color}"></span>${c.name}
+                <span class="v">${brl(catValues[i])}</span><span class="p">${Math.round(c.share * 100)}%</span></li>`).join('');
+
+        lineChart.data.labels = labels;
+        lineChart.data.datasets[0].data = nw;
+        lineChart.update();
+
+        current = labels.map((m, i) => ({ month: m, income: inc[i], expense: exp[i], balance: inc[i] - exp[i] }));
+        document.getElementById('tableCount').textContent = `${months} meses`;
+        document.getElementById('monthTable').innerHTML = [...current].reverse().map(r => `
+            <tr>
+                <td>${r.month}</td>
+                <td class="text-end amount-pos">${brl(r.income)}</td>
+                <td class="text-end amount-neg">${brl(r.expense)}</td>
+                <td class="text-end" style="font-variant-numeric:tabular-nums">${brl(r.balance)}</td>
+                <td class="text-end"><span class="badge-cat"><span class="dot"></span>${pct(r.balance / r.income)}</span></td>
+            </tr>`).join('');
+
+        const best = current.reduce((a, b) => (b.balance > a.balance ? b : a));
+        const first = current[0], last = current[current.length - 1];
+        const expChange = (last.expense - first.expense) / first.expense;
+        const rate = saved / totalIn;
+        const top = CATEGORIES[0];
+        document.getElementById('insights').innerHTML = `
+            <div class="insight ${expChange <= 0 ? 'good' : 'bad'}">
+                <i class="bi ${expChange <= 0 ? 'bi-graph-down-arrow' : 'bi-graph-up-arrow'}"></i>
+                <p>Suas despesas ${expChange <= 0 ? 'caíram' : 'subiram'} <b>${pct(Math.abs(expChange))}</b> entre ${first.month} e ${last.month}.</p>
+            </div>
+            <div class="insight good">
+                <i class="bi bi-star"></i>
+                <p><b>${best.month}</b> foi seu melhor mês: sobraram <b>${brl(best.balance)}</b>.</p>
+            </div>
+            <div class="insight ${rate >= 0.3 ? 'good' : 'warn'}">
+                <i class="bi bi-piggy-bank"></i>
+                <p>Você guardou <b>${pct(rate)}</b> da renda. ${rate >= 0.3 ? 'Acima dos 30% recomendados — continue assim!' : 'A recomendação é guardar ao menos 30%.'}</p>
+            </div>
+            <div class="insight warn">
+                <i class="bi bi-house"></i>
+                <p><b>${top.name}</b> representa ${Math.round(top.share * 100)}% dos gastos. Renegociar contas fixas tem o maior impacto.</p>
+            </div>`;
+    }
+
+    document.querySelectorAll('.seg button').forEach(btn => btn.addEventListener('click', () => {
+        document.querySelectorAll('.seg button').forEach(b => b.classList.toggle('active', b === btn));
+        render(+btn.dataset.months);
+    }));
+
+    document.getElementById('btnExport').addEventListener('click', () => {
+        const fmt = v => v.toFixed(2).replace('.', ',');
+        const rows = [['Mês', 'Receitas', 'Despesas', 'Saldo'],
+            ...current.map(r => [r.month, fmt(r.income), fmt(r.expense), fmt(r.balance)])];
+        const csv = '﻿' + rows.map(r => r.join(';')).join('\n');
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+        a.download = 'aureo-relatorio.csv';
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+    });
+
+    render(6);
+</script>
+</body>
+</html>

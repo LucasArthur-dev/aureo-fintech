@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Áureo - Metas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app-shell">
+
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <img src="assets/images/Logo/Áureo-gradiente ouro.png" alt="Áureo">
+        </div>
+        <nav>
+            <a href="dashboard.html" class="nav-link-custom">
+                <i class="bi bi-grid-1x2-fill"></i><span class="nav-label">Dashboard</span>
+            </a>
+            <a href="recebimentos.html" class="nav-link-custom">
+                <i class="bi bi-arrow-down-left-circle"></i><span class="nav-label">Recebimentos</span>
+            </a>
+            <a href="despesas.html" class="nav-link-custom">
+                <i class="bi bi-arrow-up-right-circle"></i><span class="nav-label">Despesas</span>
+            </a>
+            <a href="metas.html" class="nav-link-custom active">
+                <i class="bi bi-bullseye"></i><span class="nav-label">Metas</span>
+            </a>
+            <a href="relatorios.html" class="nav-link-custom">
+                <i class="bi bi-pie-chart"></i><span class="nav-label">Relatórios</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#" class="nav-link-custom">
+                <i class="bi bi-gear"></i><span class="nav-label">Configurações</span>
+            </a>
+            <a href="index.html" class="nav-link-custom">
+                <i class="bi bi-box-arrow-right"></i><span class="nav-label">Sair</span>
+            </a>
+        </div>
+    </aside>
+
+    <div class="app-main">
+        <header class="topbar">
+            <h1>
+                Metas
+                <small>Defina objetivos, guarde dinheiro e acompanhe seu progresso</small>
+            </h1>
+            <div class="d-flex gap-2">
+                <button class="btn btn-outline-gold" data-bs-toggle="modal" data-bs-target="#modalAporte">
+                    <i class="bi bi-piggy-bank me-1"></i> Guardar dinheiro
+                </button>
+                <button class="btn btn-gold" data-bs-toggle="modal" data-bs-target="#modalMeta">
+                    <i class="bi bi-plus-lg me-1"></i> Nova meta
+                </button>
+            </div>
+        </header>
+
+        <main class="content">
+
+            <!-- Resumo -->
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="a-card stat-card accent">
+                        <div class="stat-icon"><i class="bi bi-safe"></i></div>
+                        <div class="stat-label">Total guardado</div>
+                        <div class="stat-value" id="statSaved">—</div>
+                        <div class="stat-trend" id="statSavedPct">—</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="a-card stat-card">
+                        <div class="stat-icon"><i class="bi bi-flag"></i></div>
+                        <div class="stat-label">Metas</div>
+                        <div class="stat-value" id="statActive">—</div>
+                        <div class="stat-trend" id="statDone">—</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="a-card stat-card">
+                        <div class="stat-icon"><i class="bi bi-hourglass-split"></i></div>
+                        <div class="stat-label">Próxima a vencer</div>
+                        <div class="stat-value" id="statNext" style="font-size:1.35rem;">—</div>
+                        <div class="stat-trend" id="statNextInfo">—</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Metas de economia -->
+            <div class="section-title mt-4">
+                Metas de economia
+                <span class="muted">clique em "Guardar dinheiro" para registrar um aporte</span>
+            </div>
+            <div class="row g-3" id="goalsGrid"></div>
+
+            <!-- Orçamento mensal -->
+            <div class="row g-3 mt-1">
+                <div class="col-lg-7">
+                    <div class="a-card h-100">
+                        <div class="section-title">
+                            Limites de gastos por categoria
+                            <span class="muted">novembro · R$ 3.529,55 de R$ 4.050,00</span>
+                        </div>
+
+                        <div class="budget-row warn">
+                            <div class="top"><span>Moradia</span><span class="vals"><b>R$ 1.420,00</b> / R$ 1.500,00</span></div>
+                            <div class="bar"><span style="width:95%"></span></div>
+                            <div class="note">95% usado — restam R$ 80,00</div>
+                        </div>
+                        <div class="budget-row">
+                            <div class="top"><span>Mercado</span><span class="vals"><b>R$ 865,30</b> / R$ 1.100,00</span></div>
+                            <div class="bar"><span style="width:79%"></span></div>
+                            <div class="note">79% usado — dentro do planejado</div>
+                        </div>
+                        <div class="budget-row over">
+                            <div class="top"><span>Transporte</span><span class="vals"><b>R$ 491,70</b> / R$ 450,00</span></div>
+                            <div class="bar"><span style="width:100%"></span></div>
+                            <div class="note">Limite ultrapassado em R$ 41,70</div>
+                        </div>
+                        <div class="budget-row warn">
+                            <div class="top"><span>Saúde</span><span class="vals"><b>R$ 412,55</b> / R$ 500,00</span></div>
+                            <div class="bar"><span style="width:83%"></span></div>
+                            <div class="note">83% usado — atenção nos próximos dias</div>
+                        </div>
+                        <div class="budget-row">
+                            <div class="top"><span>Lazer</span><span class="vals"><b>R$ 340,00</b> / R$ 500,00</span></div>
+                            <div class="bar"><span style="width:68%"></span></div>
+                            <div class="note">68% usado — dentro do planejado</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="a-card h-100">
+                        <div class="section-title">Dicas do Áureo</div>
+                        <div class="d-flex flex-column gap-2">
+                            <div class="insight warn">
+                                <i class="bi bi-lightbulb"></i>
+                                <p>Guardando <b>R$ 900/mês</b> você completa a <b>Reserva de emergência</b> até junho de 2027.</p>
+                            </div>
+                            <div class="insight bad">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                <p>Transporte passou do limite. Que tal ajustar para <b>R$ 500</b> ou reduzir corridas de app?</p>
+                            </div>
+                            <div class="insight good">
+                                <i class="bi bi-trophy"></i>
+                                <p>Parabéns! A meta <b>Notebook novo</b> foi concluída 2 meses antes do prazo.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</div>
+
+<!-- Modal Nova Meta -->
+<div class="modal fade" id="modalMeta" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content a-modal" id="formMeta">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-bullseye text-gold me-2"></i>Nova meta</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label" for="metaNome">Qual é o seu objetivo?</label>
+                    <input type="text" class="form-control" id="metaNome" placeholder="Ex.: Viagem de férias" maxlength="40" required>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label class="form-label" for="metaValor">Valor da meta (R$)</label>
+                        <input type="number" class="form-control" id="metaValor" min="1" step="0.01" placeholder="5000" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label" for="metaPrazo">Prazo</label>
+                        <input type="month" class="form-control" id="metaPrazo" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label" for="metaIcone">Categoria</label>
+                        <select class="form-select" id="metaIcone">
+                            <option value="bi-piggy-bank">Economia</option>
+                            <option value="bi-airplane">Viagem</option>
+                            <option value="bi-house">Casa</option>
+                            <option value="bi-car-front">Veículo</option>
+                            <option value="bi-mortarboard">Educação</option>
+                            <option value="bi-gift">Presente</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-gold" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-gold"><i class="bi bi-check2 me-1"></i> Criar meta</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal Aporte -->
+<div class="modal fade" id="modalAporte" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <form class="modal-content a-modal" id="formAporte">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-piggy-bank text-gold me-2"></i>Guardar dinheiro</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label class="form-label" for="aporteMeta">Para qual meta?</label>
+                    <select class="form-select" id="aporteMeta"></select>
+                </div>
+                <div>
+                    <label class="form-label" for="aporteValor">Valor (R$)</label>
+                    <input type="number" class="form-control" id="aporteValor" min="1" step="0.01" placeholder="200" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-gold" data-bs-dismiss="modal">Cancelar</button>
+                <button type="submit" class="btn btn-gold"><i class="bi bi-check2 me-1"></i> Guardar</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const goals = [
+        { name: 'Reserva de emergência', icon: 'bi-shield-check', saved: 9600, target: 15000, deadline: '2027-06' },
+        { name: 'Viagem para o Chile',   icon: 'bi-airplane',     saved: 3150, target: 7000,  deadline: '2027-03' },
+        { name: 'Quitar cartão de crédito', icon: 'bi-credit-card', saved: 1800, target: 3000, deadline: '2027-01' },
+        { name: 'Curso de inglês',       icon: 'bi-mortarboard',  saved: 450,  target: 2400,  deadline: '2027-08' },
+        { name: 'Notebook novo',         icon: 'bi-laptop',       saved: 4200, target: 4200,  deadline: '2027-01' }
+    ];
+
+    const brl = v => v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    const MONTHS = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+    const fmtMonth = ym => { const [y, m] = ym.split('-'); return `${MONTHS[+m - 1]}/${y}`; };
+    const esc = s => s.replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    function render() {
+        const grid = document.getElementById('goalsGrid');
+        const ordered = [...goals].sort((a, b) => (a.saved >= a.target) - (b.saved >= b.target));
+        grid.innerHTML = ordered.map(g => {
+            const pct = Math.min(100, Math.round(g.saved / g.target * 100));
+            const done = g.saved >= g.target;
+            const missing = Math.max(0, g.target - g.saved);
+            return `
+            <div class="col-md-6 col-xl-4">
+                <div class="a-card goal-card ${done ? 'done' : ''}">
+                    <div class="goal-head">
+                        <div class="goal-icon"><i class="bi ${g.icon}"></i></div>
+                        <div>
+                            <p class="goal-title">${esc(g.name)}</p>
+                            <div class="goal-deadline"><i class="bi bi-calendar3 me-1"></i>até ${fmtMonth(g.deadline)}</div>
+                        </div>
+                    </div>
+                    <div class="goal-values">
+                        <span class="goal-saved">${brl(g.saved)}</span>
+                        <span class="goal-target">de ${brl(g.target)}</span>
+                    </div>
+                    <div class="goal-progress ${done ? 'done' : ''}"><span style="width:${pct}%"></span></div>
+                    <div class="goal-foot">
+                        <span>${done ? '<i class="bi bi-check-circle-fill text-success me-1"></i>Meta concluída' : 'Faltam ' + brl(missing)}</span>
+                        <span class="pct">${pct}%</span>
+                    </div>
+                </div>
+            </div>`;
+        }).join('') + `
+            <div class="col-md-6 col-xl-4">
+                <button class="a-card goal-add" data-bs-toggle="modal" data-bs-target="#modalMeta">
+                    <i class="bi bi-plus-circle"></i>
+                    <span>Criar nova meta</span>
+                </button>
+            </div>`;
+
+        const select = document.getElementById('aporteMeta');
+        select.innerHTML = goals
+            .map((g, i) => g.saved < g.target ? `<option value="${i}">${esc(g.name)}</option>` : '')
+            .join('');
+
+        const saved = goals.reduce((s, g) => s + g.saved, 0);
+        const target = goals.reduce((s, g) => s + g.target, 0);
+        const active = goals.filter(g => g.saved < g.target);
+        document.getElementById('statSaved').textContent = brl(saved);
+        document.getElementById('statSavedPct').textContent = `${Math.round(saved / target * 100)}% do total de ${brl(target)}`;
+        document.getElementById('statActive').textContent = `${active.length} em andamento`;
+        document.getElementById('statDone').textContent = `${goals.length - active.length} concluída(s)`;
+
+        const next = [...active].sort((a, b) => a.deadline.localeCompare(b.deadline))[0];
+        document.getElementById('statNext').textContent = next ? next.name : 'Nenhuma';
+        document.getElementById('statNextInfo').textContent = next
+            ? `faltam ${brl(next.target - next.saved)} até ${fmtMonth(next.deadline)}`
+            : 'todas as metas concluídas';
+    }
+
+    document.getElementById('formAporte').addEventListener('submit', e => {
+        e.preventDefault();
+        const idx = +document.getElementById('aporteMeta').value;
+        const val = parseFloat(document.getElementById('aporteValor').value);
+        if (!goals[idx] || !(val > 0)) return;
+        goals[idx].saved = Math.min(goals[idx].target, goals[idx].saved + val);
+        e.target.reset();
+        bootstrap.Modal.getInstance(document.getElementById('modalAporte')).hide();
+        render();
+    });
+
+    document.getElementById('formMeta').addEventListener('submit', e => {
+        e.preventDefault();
+        goals.push({
+            name: document.getElementById('metaNome').value.trim(),
+            icon: document.getElementById('metaIcone').value,
+            saved: 0,
+            target: parseFloat(document.getElementById('metaValor').value),
+            deadline: document.getElementById('metaPrazo').value
+        });
+        e.target.reset();
+        bootstrap.Modal.getInstance(document.getElementById('modalMeta')).hide();
+        render();
+    });
+
+    render();
+</script>
+</body>
+</html>

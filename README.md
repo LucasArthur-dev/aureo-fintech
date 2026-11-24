@@ -19,6 +19,8 @@ Após a publicação, o protótipo fica disponível em:
 | Dashboard | `dashboard.html` | Visão geral: saldo, receitas, despesas, gráfico de fluxo de caixa e últimas movimentações. |
 | Recebimentos | `recebimentos.html` | Controle das fontes de renda (salário, freela, investimentos). |
 | Despesas | `despesas.html` | Gestão de gastos com filtros por categoria e período. |
+| Metas | `metas.html` | Metas de economia com progresso, aportes ("Guardar dinheiro"), criação de novas metas e limites de gastos por categoria. |
+| Relatórios | `relatorios.html` | Análise por período (3/6/12 meses): receitas x despesas, gastos por categoria, evolução do patrimônio, insights automáticos e exportação CSV. |
 
 ## 🎨 Stack
 
