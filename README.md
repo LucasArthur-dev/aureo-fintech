@@ -8,7 +8,7 @@ Este repositório contém o **protótipo web navegável** da plataforma, materia
 
 Após a publicação, o protótipo fica disponível em:
 
-**https://rrgestaocontabil.github.io/aureo-fintech/**
+**https://lucasarthur-dev.github.io/aureo-fintech/**
 
 ## 📁 Telas incluídas
 
