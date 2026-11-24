@@ -10,6 +10,14 @@ Após a publicação, o protótipo fica disponível em:
 
 **https://lucasarthur-dev.github.io/aureo-fintech/**
 
+## 🔑 Acesso de demonstração
+
+| E-mail | Senha |
+|---|---|
+| `demo@aureo.com` | `aureo123` |
+
+Na tela de login, o botão **Preencher** coloca esses dados automaticamente. Contas criadas em **Cadastro** também funcionam no login (ficam salvas só no navegador, com a senha guardada como hash SHA-256). A autenticação é simulada: não há backend.
+
 ## 📁 Telas incluídas
 
 | Tela | Arquivo | Descrição |

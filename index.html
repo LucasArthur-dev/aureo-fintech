@@ -39,16 +39,25 @@
                 </div>
 
                 <h2 class="text-white fw-normal mb-1">Bem vindo ao Áureo</h2>
-                <p class="text-muted mb-4">Controle sua vida financeira</p>
+                <p class="text-muted mb-3">Controle sua vida financeira</p>
 
-                <form onsubmit="event.preventDefault(); window.location.href='dashboard.html';">
+                <div class="demo-box mb-4">
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <span class="demo-title"><i class="bi bi-info-circle me-1"></i> Acesso de demonstração</span>
+                        <button type="button" class="demo-fill" id="fillDemo">Preencher</button>
+                    </div>
+                    <div class="demo-cred">E-mail: <code>demo@aureo.com</code></div>
+                    <div class="demo-cred">Senha: <code>aureo123</code></div>
+                </div>
+
+                <form id="loginForm" novalidate>
                     <div class="mb-3 text-start">
                         <label for="email" class="form-label text-white fst-italic">E-mail</label>
                         <div class="input-group">
                             <span class="input-group-text bg-dark border-gold text-muted">
                                 <img src="assets/images/Icones/mail.png" alt="Icone Email" style="width: 18px; height: 18px; object-fit: contain;" class="input-icon">
                             </span>
-                            <input type="email" class="form-control bg-dark text-white border-gold" id="email" placeholder="Insira seu e-mail">
+                            <input type="email" class="form-control bg-dark text-white border-gold" id="email" placeholder="Insira seu e-mail" autocomplete="username">
                         </div>
                     </div>
 
@@ -58,8 +67,12 @@
                             <span class="input-group-text bg-dark border-gold text-muted">
                                 <img src="assets/images/Icones/lock.png" alt="Icone Senha" style="width: 18px; height: 18px; object-fit: contain;" class="input-icon">
                             </span>
-                            <input type="password" class="form-control bg-dark text-white border-gold" id="password" placeholder="Insira sua senha">
+                            <input type="password" class="form-control bg-dark text-white border-gold" id="password" placeholder="Insira sua senha" autocomplete="current-password">
                         </div>
+                    </div>
+
+                    <div class="login-error text-start" id="loginError" role="alert" hidden>
+                        <i class="bi bi-exclamation-circle me-1"></i> E-mail ou senha incorretos.
                     </div>
 
                     <div class="text-start mb-4">
@@ -81,5 +94,32 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="auth.js"></script>
+    <script>
+        const form = document.getElementById('loginForm');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const error = document.getElementById('loginError');
+
+        document.getElementById('fillDemo').addEventListener('click', () => {
+            email.value = AUREO_DEMO.email;
+            password.value = AUREO_DEMO.senha;
+            error.hidden = true;
+        });
+
+        [email, password].forEach(el => el.addEventListener('input', () => { error.hidden = true; }));
+
+        form.addEventListener('submit', async e => {
+            e.preventDefault();
+            if (await aureoCheckLogin(email.value, password.value)) {
+                window.location.href = 'dashboard.html';
+            } else {
+                error.hidden = false;
+                form.classList.remove('shake');
+                void form.offsetWidth;
+                form.classList.add('shake');
+            }
+        });
+    </script>
 </body>
 </html>
